@@ -47,7 +47,7 @@ function startMovingPopups() {
         }
       }
     }
-  }, 100); // Slower movement (was 50ms)
+  }, 50); // Slower movement (was 50ms)
 }
 
 // Open New Popups and initialize movement in each popup
@@ -86,7 +86,7 @@ setInterval(() => {
 // Open 10 popups on keydown (any key)
 document.addEventListener('keydown', () => {
   music.play();
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 5; i++) {
     createNewPopUp();
   }
 });
@@ -94,14 +94,14 @@ document.addEventListener('keydown', () => {
 // Open 10 popups on click
 document.addEventListener('click', () => {
   music.play();
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 5; i++) {
     createNewPopUp();
   }
 });
 
 // Open 3 popups when the page loads
 window.onload = () => {
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 2; i++) {
     createNewPopUp();  // Open 3 popups automatically on page load
   }
 };
