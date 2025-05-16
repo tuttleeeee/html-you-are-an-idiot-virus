@@ -8,109 +8,114 @@
 <h1 id="title"></h1>
 
 <style>
-#title{
-text-align: center;
-margin-top: 50px;
-font-size: 100px;
+#title {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 100px;
 }
 </style>
+
 <script>
-const title = document.getElementById('title')
-const body = document.getElementById('bodyEl')
+const title = document.getElementById('title');
+const body = document.getElementById('bodyEl');
 
-const music = new Audio('extra.mp3')
+const music = new Audio('extra.mp3');
 
-let nextAn = 1
-let indexN = 0
-let wordlist = ['you', 'are', 'an', 'idiot']
-let popups = [window]
+let nextAn = 1;
+let indexN = 0;
+let wordlist = ['you', 'are', 'an', 'idiot'];
+let popups = [window];
 
-function getRandomCordinats(){
-return [Math.floor(Math.random() * (screen.width-100 - 0) + 0), Math.floor(Math.random() * (screen.height-100 - 0) + 0)]
+function getRandomCordinats() {
+  return [
+    Math.floor(Math.random() * (screen.width - 100)),
+    Math.floor(Math.random() * (screen.height - 100))
+  ];
 }
 
-setInterval(()=>{
-if (popups.length!=0){
-for (let i = 0; i < popups.length;i++){
-let xy = getRandomCordinats()
-popups[i].moveTo(xy[0], xy[1])
-popups[i].focus()
-}
-}
-}, 50)/*make this lower later*/
-
-setInterval(()=>{
-title.textContent = wordlist[indexN]
-if(nextAn==1){
-title.style.color = 'black'
-body.style.backgroundColor = 'white'
-nextAn = 2
-}else{
-title.style.color = 'white'
-body.style.backgroundColor = 'black'
-nextAn = 1
-}
-if (indexN == 3) {
-indexN = 0
-}else{
-indexN++
-}
-}, 400)
-
-function createNewPopUp(){
-let newWindow = window.open('index.html','', 'width=350px height=200px')
-popups.push(newWindow)
+// Popup Movement Logic (for each individual popup)
+function startMovingPopups() {
+  setInterval(() => {
+    if (popups.length != 0) {
+      for (let i = 0; i < popups.length; i++) {
+        let xy = getRandomCordinats();
+        try {
+          popups[i].moveTo(xy[0], xy[1]);
+          popups[i].focus();
+        } catch (e) {
+          // Ignore if popup is closed or blocked
+        }
+      }
+    }
+  }, 200); // Slower movement (was 50ms)
 }
 
-window.addEventListener('beforeunload', (e)=>{
-for (let i = 0; i<2; i++){
-createNewPopUp()
+// Open New Popups and initialize movement in each popup
+function createNewPopUp() {
+  const newWindow = window.open(
+    window.location.href,
+    '',
+    'width=350,height=200,left=100,top=100'
+  );
+  if (newWindow) {
+    popups.push(newWindow);
+
+    // Initialize the movement for each popup separately
+    newWindow.onload = function() {
+      startMovingPopups(); // Start moving the popups when loaded
+    };
+  }
 }
 
-e.preventDefault()
-e.returnValue = ''
-})
+// Slower popup movement interval (now 200ms for main window)
+setInterval(() => {
+  title.textContent = wordlist[indexN];
+  if (nextAn == 1) {
+    title.style.color = 'black';
+    body.style.backgroundColor = 'white';
+    nextAn = 2;
+  } else {
+    title.style.color = 'white';
+    body.style.backgroundColor = 'black';
+    nextAn = 1;
+  }
 
-window.addEventListener('resize', ()=>{
-let h = window.innerHeight
-title.style.marginTop = (h/2 - 120).toString() + "px"
-})
+  indexN = (indexN + 1) % wordlist.length;
+}, 400);
 
-document.addEventListener('click', ()=>{
-music.play()
-})
+// Open 10 popups on keydown (any key)
+document.addEventListener('keydown', () => {
+  music.play();
+  for (let i = 0; i < 10; i++) {
+    createNewPopUp();
+  }
+});
 
-document.addEventListener('mouseenter', ()=>{
-music.play()
-})
+// Open 10 popups on click
+document.addEventListener('click', () => {
+  music.play();
+  for (let i = 0; i < 10; i++) {
+    createNewPopUp();
+  }
+});
 
-document.addEventListener('keydown', (e)=>{
-music.play()
-for (let i = 0; i<2; i++){
-createNewPopUp()
-}
-e.preventDefault()
-})
+// Open 3 popups when the page loads
+window.onload = () => {
+  for (let i = 0; i < 3; i++) {
+    createNewPopUp();  // Open 3 popups automatically on page load
+  }
+};
 
-document.addEventListener('mousemove', (e)=>{
-music.play()
-for (let i = 0; i<2; i++){
-createNewPopUp()
-}
-e.preventDefault()
-})
-document.addEventListener('click', (e)=>{
-music.play()
-for (let i = 0; i<2; i++){
-createNewPopUp()
-}
-e.preventDefault()
-})
+music.addEventListener('ended', () => {
+  music.play();
+});
 
-music.addEventListener('ended', ()=>{
-music.play()
-})
+window.addEventListener('resize', () => {
+  let h = window.innerHeight;
+  title.style.marginTop = (h / 2 - 120).toString() + "px";
+});
 
+// Removed beforeunload trigger for safety
 </script>
 </body>
 </html>
