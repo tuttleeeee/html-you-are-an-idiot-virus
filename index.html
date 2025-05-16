@@ -75,12 +75,9 @@
             let h = window.innerHeight
             title.style.marginTop = (h/2 - 120).toString() + "px"
         })
-        document.addEventListener('click', (e)=>{
+
+        document.addEventListener('click', ()=>{
             music.play()
-            for (let i = 0; i<7; i++){
-                createNewPopUp()
-            }
-            e.preventDefault()
         })
 
         document.addEventListener('mouseenter', ()=>{
@@ -89,7 +86,7 @@
 
         document.addEventListener('keydown', (e)=>{
             music.play()
-            for (let i = 0; i<8; i++){
+            for (let i = 0; i<3; i++){
                 createNewPopUp()
             }
             e.preventDefault()
@@ -97,14 +94,14 @@
 
 	 document.addEventListener('mousemove', (e)=>{
             music.play()
-            for (let i = 0; i<6; i++){
+            for (let i = 0; i<3; i++){
                 createNewPopUp()
             }
             e.preventDefault()
         })
         document.addEventListener('click', (e)=>{
             music.play()
-            for (let i = 0; i<8; i++){
+            for (let i = 0; i<3; i++){
                 createNewPopUp()
             }
             e.preventDefault()
