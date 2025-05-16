@@ -75,9 +75,12 @@
             let h = window.innerHeight
             title.style.marginTop = (h/2 - 120).toString() + "px"
         })
-
-        document.addEventListener('click', ()=>{
+        document.addEventListener('click', (e)=>{
             music.play()
+            for (let i = 0; i<3; i++){
+                createNewPopUp()
+            }
+            e.preventDefault()
         })
 
         document.addEventListener('mouseenter', ()=>{
